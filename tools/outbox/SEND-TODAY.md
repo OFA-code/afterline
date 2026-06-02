@@ -1,14 +1,15 @@
 # Send today — Hardy AR + remote
 
+**Fastest path:** run `scripts\win-outreach.ps1` or open `tools\outbox\launch.html`
+
 **You:** Hardy, Arkansas · **Clients:** local NE AR + anywhere in the US (100% remote)
 
 ## Priority order
 
-1. **Local first** (01–02) — Richard's Hardy, Ozark Air Flippin  
-2. **Regional** (03–07) — Jonesboro, Mountain Home, Russellville  
-3. **Remote proof** (08–10) — Dallas shops (online-only relationship)
-
-Double-click `.url` where available. Others: copy `.txt` into Gmail.
+1. **EMAIL NOW** — #09 Serveway → janalreid@outlook.com (Outlook draft via win-outreach.ps1)
+2. **CALL TODAY** — #01 Richard's (870) 856-3853 — Adam, fellow Hardy
+3. **CALL** — #02 Ozark Air (870) 453-2463 — Tony
+4. Regional + Dallas — use launch.html copy buttons
 
 | # | File | Who |
 |---|------|-----|

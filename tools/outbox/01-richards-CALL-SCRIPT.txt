@@ -1,0 +1,9 @@
+CALL / TEXT — Richard's Heating — Adam — (870) 856-3853
+
+OPENING (voicemail or live):
+"Hi Adam, this is Deallo in Hardy. Quick question — not a sales pitch. When your team's on a job and you miss a call, what happens to that lead? I'm helping a few local HVAC shops text back in under a minute. Call me back or book 15 minutes online — afterline book page on GitHub — or I'll try you once more."
+
+TEXT (if they prefer SMS):
+Hi Adam — Deallo in Hardy. When you miss a call on a job, does anyone text back same day? We help HVAC shops fix that remotely. $497 pilot / 30 days. 15-min audit: https://ofa-code.github.io/afterline/book.html
+
+AFTER TOUCH: Mark sent in launch.html + LEAD-TRACKER status=sent

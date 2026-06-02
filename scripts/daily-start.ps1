@@ -18,6 +18,7 @@ if (-not $apiRunning) {
   Start-Sleep -Seconds 2
 }
 
+Start-Process "$Root\tools\outbox\launch.html"
 Start-Process "$Root\tools\LEAD-TRACKER.csv"
 Start-Process "$Root\operations\DAILY-RHYTHM.md"
 Start-Process "$Root\marketing\outreach\PLAYBOOK.md"

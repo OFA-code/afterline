@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afterline — Win Outreach</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0f1419; color: #e7e9ea; margin: 0; padding: 24px; max-width: 900px; margin-inline: auto; }
+    h1 { font-size: 1.5rem; margin: 0 0 8px; }
+    .sub { color: #8b98a5; margin-bottom: 24px; font-size: 0.95rem; }
+    .card { background: #1a2332; border: 1px solid #2f3b4a; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .card.done { opacity: 0.55; border-color: #22c55e; }
+    .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .name { font-weight: 600; }
+    .meta { color: #8b98a5; font-size: 0.85rem; margin-top: 4px; }
+    .tag { display: inline-block; background: #243044; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 6px; }
+    .tag.email { background: #1e3a5f; color: #7dd3fc; }
+    .tag.phone { background: #3b2f1e; color: #fcd34d; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  button, a.btn {
+      padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.85rem;
+      text-decoration: none; display: inline-block; color: #fff; background: #3b82f6;
+    }
+    button.secondary, a.btn.secondary { background: #374151; }
+    button.ok { background: #16a34a; }
+    pre { display: none; }
+    .progress { margin: 16px 0; font-size: 0.9rem; color: #22c55e; }
+    .offer { background: #152a1a; border: 1px solid #22c55e44; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Win outreach — send today</h1>
+  <p class="sub">Send from <strong>deallomcconnell@optimalflowagency.io</strong> in Outlook. Mark done after each send.</p>
+  <div class="offer">
+    <strong>Offer:</strong> $497 pilot / 30 days → then $997/mo. Close on audit with <code>sales/AUDIT-CALL.md</code>.
+  </div>
+  <p class="progress" id="progress"></p>
+  <div id="list"></div>
+  <script>
+    const BOOK = 'https://ofa-code.github.io/afterline/book.html';
+
+    const leads = [
+      { id:'01', company:"Richard's Heating", first:'Adam', channel:'phone', phone:'8708563853', city:'Hardy', p:1,
+        subject:"quick question — Richard's missed calls (Hardy)",
+        body:`Hi Adam,\n\nI'm in Hardy too. I help local HVAC shops recover missed calls and stale estimates — 100% remote.\n\nWhen your crew is on a job and a lead calls, what happens after hours? Most shops lose 2–4 jobs/month from slow text-back.\n\nMissed-call text (<60 sec), estimate follow-up, reviews. $497 pilot / 30 days.\n\n15-min audit: ${BOOK}\n\n— Deallo | Afterline | Hardy AR` },
+      { id:'09', company:'Serveway Heating and Air', first:'Brian', channel:'email', email:'janalreid@outlook.com', phone:'4692319379', city:'Dallas', p:1,
+        subject:'missed calls — remote follow-up for Serveway',
+        body:`Hi Brian,\n\nServeway's reviews stand out in Dallas — phones must be busy in season.\n\nWhen a call is missed on a job, does anyone text back same day? We automate that in your voice — 100% remote.\n\n$497 pilot / 30 days. One recovered job usually covers it.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'02', company:'Ozark Air', first:'Tony', channel:'phone', phone:'8704532463', city:'Flippin', p:2,
+        subject:'quick question about Ozark Air missed calls',
+        body:`Hi Tony,\n\nNE Arkansas neighbor here. When a call is missed on a job, does anyone text back same day?\n\nWe help HVAC shops automate follow-up — your templates, fully remote. $497 pilot.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'03', company:'Air Today LLC', first:'Mark', channel:'phone', phone:'8709332653', city:'Jonesboro', p:2,
+        subject:'quick question about Air Today missed calls',
+        body:`Hi Mark,\n\nStrong Jonesboro reviews — nonstop phones in season, I'd guess.\n\nWhat happens to missed calls when techs are on-site? Remote text-back + estimate follow-up. 15-min audit:\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'08', company:'Deckard Plumbing', first:'', channel:'website', web:'https://hardy-ar.deckardplumbingservice.com', city:'Hardy', p:2,
+        subject:'Deckard — missed calls',
+        body:`Hi,\n\nLocal in Hardy — we help shops recover missed calls and stale estimates. $497 pilot, remote.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'04', company:'Ice Heat and Air', first:'Clinton', channel:'phone', phone:'8704059071', city:'Mountain Home', p:3,
+        subject:'Ice Heat — missed call follow-up',
+        body:`Hi Clinton,\n\nText missed calls in under 60 sec + nudge estimates. $497 / 30-day pilot, remote.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'05', company:'Central Heating', first:'Matt', channel:'phone', phone:'8704254717', city:'Mountain Home', p:3,
+        subject:'Central Heating — quick question',
+        body:`Hi Matt,\n\nAutomated missed-call text + weekly KPI reports. 100% remote. $497 pilot.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'07', company:'AR River Valley HVAC', first:'Tony', channel:'phone', phone:'4799644004', city:'Russellville', p:3,
+        subject:'River Valley HVAC — follow-up',
+        body:`Hi Tony,\n\nMissed-call text + weekly reports for HVAC shops. Remote. $497 pilot.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'10', company:'Rescue Air', first:'Joshua', channel:'phone', phone:'2142662222', city:'Dallas', p:3,
+        subject:'Rescue Air — remote follow-up',
+        body:`Hi Joshua,\n\nMissed-call text-back + estimate follow-up nationwide. $497 pilot.\n\n${BOOK}\n\n— Deallo | Afterline` },
+      { id:'06', company:'Jim Brown Co', first:'J.N.', channel:'phone', phone:'8704255775', city:'Mountain Home', p:3,
+        subject:'Jim Brown Co — missed calls',
+        body:`Hi,\n\nText back missed calls + quote follow-up. Remote. $497 pilot.\n\n${BOOK}\n\n— Deallo | Afterline` },
+    ];
+
+    const sent = JSON.parse(localStorage.getItem('afterline_sent') || '{}');
+
+    function mailto(lead) {
+      const q = new URLSearchParams({ subject: lead.subject, body: lead.body });
+      return `mailto:${lead.email}?${q}`;
+    }
+
+    function tel(phone) {
+      const d = phone.replace(/\D/g, '');
+      return `tel:+1${d.length === 10 ? d : d}`;
+    }
+
+    function render() {
+      const sorted = [...leads].sort((a, b) => a.p - b.p);
+      const done = sorted.filter(l => sent[l.id]).length;
+      document.getElementById('progress').textContent = `${done} / ${sorted.length} sent today — keep going.`;
+
+      document.getElementById('list').innerHTML = sorted.map(lead => {
+        const isDone = sent[lead.id];
+        const tag = lead.channel === 'email' ? '<span class="tag email">EMAIL</span>'
+          : lead.channel === 'phone' ? '<span class="tag phone">CALL / TEXT</span>'
+          : '<span class="tag">WEB FORM</span>';
+        let actions = `<button type="button" class="secondary" data-copy="${lead.id}">Copy message</button>`;
+        if (lead.email) actions += `<a class="btn" href="${mailto(lead)}">Open in Outlook</a>`;
+        if (lead.phone) actions += `<a class="btn secondary" href="${tel(lead.phone)}">Call</a>`;
+        if (lead.web) actions += `<a class="btn secondary" href="${lead.web}" target="_blank">Website</a>`;
+        actions += `<button type="button" class="ok" data-done="${lead.id}">${isDone ? 'Sent' : 'Mark sent'}</button>`;
+        return `<div class="card ${isDone ? 'done' : ''}" data-id="${lead.id}">
+          <div class="top">
+            <div>
+              <div class="name">#${lead.id} ${lead.company}</div>
+              <div class="meta">${lead.first ? lead.first + ' · ' : ''}${lead.city} ${tag}</div>
+            </div>
+          </div>
+          <div class="actions">${actions}</div>
+          <pre id="body-${lead.id}">${lead.body.replace(/</g, '&lt;')}</pre>
+        </div>`;
+      }).join('');
+
+      document.querySelectorAll('[data-copy]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.copy;
+          const lead = leads.find(l => l.id === id);
+          navigator.clipboard.writeText(`Subject: ${lead.subject}\n\n${lead.body}`);
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy message'; }, 1500);
+        };
+      });
+      document.querySelectorAll('[data-done]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.done;
+          sent[id] = new Date().toISOString();
+          localStorage.setItem('afterline_sent', JSON.stringify(sent));
+          render();
+        };
+      });
+    }
+    render();
+  </script>
+</body>
+</html>
