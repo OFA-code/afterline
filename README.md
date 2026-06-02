@@ -3,7 +3,7 @@
 **Mission:** Help home-service companies book more jobs from leads they already have — with honest pricing, measurable results, and AI doing the repetitive work so you stay behind the scenes.
 
 **Open this folder in Cursor.**  
-**Go live today:** [SETUP-NOW.md](SETUP-NOW.md) · Revenue plan: [30-DAY-PLAN.md](30-DAY-PLAN.md) · $30k path: [GOALS-30K.md](GOALS-30K.md)
+**Live site:** https://ofa-code.github.io/afterline/ · **Start API + admin:** double-click `START.ps1` · **3 steps only you can do:** [ONE-THING-LEFT.md](ONE-THING-LEFT.md)
 
 ## Quick links
 
@@ -22,7 +22,7 @@
 Replace placeholders in `marketing/landing/index.html`:
 
 - `Trave` — billing / contracts only (can stay private)
-- `Trave@users.noreply.github.com` — hello@yourdomain.com
+- `deallomcconnell@optimalflowagency.io` — hello@yourdomain.com
 - `https://OFA-code.github.io/afterline/book.html` — booking link for 15-min fit calls
 
 ## Brand

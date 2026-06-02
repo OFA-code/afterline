@@ -15,6 +15,8 @@
     .book-form textarea { min-height: 80px; resize: vertical; }
     .success { display: none; background: rgba(34,197,94,0.15); border: 1px solid var(--green); padding: 20px; border-radius: 12px; margin-top: 24px; }
     .success.show { display: block; }
+    .err { color: #f87171; font-size: 0.9rem; margin-top: 12px; display: none; }
+    .err.show { display: block; }
   </style>
 </head>
 <body>
@@ -39,12 +41,13 @@
         <label>What's your biggest leak? (optional)</label>
         <textarea name="message" placeholder="Missed calls after hours, estimates going cold..."></textarea>
         <p style="margin-top:24px">
-          <button type="submit" class="btn" style="border:none;cursor:pointer;width:100%">Request audit</button>
+          <button type="submit" class="btn" id="submitBtn" style="border:none;cursor:pointer;width:100%">Request audit</button>
         </p>
+        <p class="err" id="err"></p>
       </form>
       <div class="success" id="success">
         <strong>Request received.</strong>
-        <p style="color:var(--muted);margin-top:8px">We'll reach out within one business day. If urgent, email <a href="mailto:Trave@users.noreply.github.com">Trave@users.noreply.github.com</a>.</p>
+        <p style="color:var(--muted);margin-top:8px">We'll reach out within one business day. Questions? <a href="mailto:deallomcconnell@optimalflowagency.io">deallomcconnell@optimalflowagency.io</a></p>
       </div>
       <p style="margin-top:32px;text-align:center;font-size:0.85rem;color:var(--muted)">
         <a href="index.html">← Back to home</a>
@@ -52,40 +55,69 @@
     </div>
   </section>
   <script>
-    window.AFTERLINE_BOOK_EMAIL = 'Trave@users.noreply.github.com';
+    window.AFTERLINE_BOOK_EMAIL = 'deallomcconnell@optimalflowagency.io';
+    window.AFTERLINE_CC_EMAIL = 'deallomcconnell@gmail.com';
     window.AFTERLINE_API = 'http://localhost:3847';
-    const API = window.AFTERLINE_API;
-    const EMAIL = window.AFTERLINE_BOOK_EMAIL;
+
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errEl = document.getElementById('err');
+      errEl.classList.remove('show');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
       const fd = new FormData(e.target);
       const body = Object.fromEntries(fd.entries());
-    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    const mailto = () => {
-      if (EMAIL.includes('noreply.github.com') || EMAIL.includes('CHANGE_ME')) {
-        alert('Booking saved locally is unavailable on the live site. Email Trave directly after updating config/business.json with your real Gmail, or run START.ps1 and use http://localhost:3847/admin.html for leads.');
-        return;
-      }
-      window.location.href = 'mailto:' + EMAIL + '?' + new URLSearchParams({
-        subject: 'Audit request — ' + (body.company || 'home service'),
-        body: Object.entries(body).map(([k, v]) => k + ': ' + v).join('\n'),
-      }).toString();
-    };
-    if (isLocal && API) {
+      const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
+      const showSuccess = () => {
+        document.getElementById('form').style.display = 'none';
+        document.getElementById('success').classList.add('show');
+      };
+
+      const mailto = () => {
+        window.location.href = 'mailto:' + window.AFTERLINE_BOOK_EMAIL + '?' + new URLSearchParams({
+          subject: 'Audit request — ' + (body.company || 'home service'),
+          body: Object.entries(body).map(([k, v]) => k + ': ' + v).join('\n'),
+        }).toString();
+      };
+
+      if (isLocal && window.AFTERLINE_API) {
         try {
-          const res = await fetch(API + '/api/book-audit', {
+          const res = await fetch(window.AFTERLINE_API + '/api/book-audit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
           });
-          if (res.ok) {
-            document.getElementById('form').style.display = 'none';
-            document.getElementById('success').classList.add('show');
-            return;
-          }
-        } catch { /* fall through */ }
+          if (res.ok) { showSuccess(); return; }
+        } catch { /* continue */ }
       }
-      mailto();
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(window.AFTERLINE_BOOK_EMAIL), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            name: body.name,
+            company: body.company,
+            phone: body.phone,
+            email: body.email,
+            message: body.message || '',
+            _subject: 'Afterline audit — ' + body.company,
+            _template: 'table',
+            _captcha: 'false',
+            _cc: window.AFTERLINE_CC_EMAIL,
+          }),
+        });
+        if (res.ok) { showSuccess(); return; }
+      } catch { /* continue */ }
+
+      btn.disabled = false;
+      btn.textContent = 'Request audit';
+      errEl.textContent = 'Could not send online — opening your email app instead.';
+      errEl.classList.add('show');
+      setTimeout(mailto, 800);
     });
   </script>
 </body>

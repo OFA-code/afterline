@@ -18,6 +18,7 @@ if ($cfg.businessEmail -match 'CHANGE_ME') {
 }
 
 node "$Root\scripts\apply-config.mjs"
+Copy-Item "$Root\marketing\landing\*" "$Root\docs\" -Force -ErrorAction SilentlyContinue
 
 $secret = -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | ForEach-Object { [char]$_ })
 $envPath = Join-Path $Root "apps\afterline\.env"

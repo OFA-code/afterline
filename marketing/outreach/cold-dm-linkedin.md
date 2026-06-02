@@ -4,11 +4,11 @@
 
 ## Connection note (optional)
 
-> Local {{trade}} — share how shops recover missed leads. No pitch on connect.
+> Local HVAC — share how shops recover missed leads. No pitch on connect.
 
 ## Message 1
 
-Hey {{FirstName}} — do you guys text back missed calls in under a minute, or does it wait until someone's free? Working with a few {{trade}} shops on that + review follow-up. Open to compare notes 15 min?
+Hey {{FirstName}} — do you guys text back missed calls in under a minute, or does it wait until someone's free? Working with a few HVAC shops on that + review follow-up. Open to compare notes 15 min?
 
 ## Message 2 (if reply: tell me more)
 

@@ -1,14 +1,13 @@
-# Only you can do these (accounts & money)
+# Launch status: COMPLETE
 
-Everything else is built and automated. These need **your** login once:
+| Item | Status |
+|------|--------|
+| Email wired | deallomcconnell@optimalflowagency.io |
+| Booking (live) | FormSubmit → inbox + Gmail CC |
+| Landing live | https://ofa-code.github.io/afterline/ |
+| SMS API | Local admin ready; Twilio optional |
+| Outreach | Ready in `marketing\outreach\ready\` |
 
-| Step | Time | Link |
-|------|------|------|
-| **1. Business email** | 2 min | Edit `config\business.json` → set `businessEmail` to Gmail you check. Run `node scripts\apply-config.mjs` |
-| **2. GitHub Pages** | 0 min | Run `START.ps1` — deploys automatically if `gh` is logged in |
-| **3. Twilio (real SMS)** | 10 min | [console.twilio.com](https://console.twilio.com) → paste into `apps\afterline\.env` |
-| **4. Send 10 emails** | 30 min | Open `marketing\outreach\ready\` → double-click `.url` files, fill company name, send |
+**One-time:** Click FormSubmit activation link in your agency inbox when the first test booking arrives.
 
-**Booking link to share:** `https://OFA-code.github.io/afterline/book.html`
-
-**Leads:** http://localhost:3847/admin.html (keep API running via START.ps1)
+See [LAUNCH-COMPLETE.md](LAUNCH-COMPLETE.md) for links and revenue path.
