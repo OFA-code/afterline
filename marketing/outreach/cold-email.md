@@ -8,13 +8,13 @@
 
 Hi {{FirstName}},
 
-I was looking at {{CompanyName}} on Google — strong reviews, which is rare for {{trade}} in {{City}}.
+I was looking at {{CompanyName}} on Google — strong reviews, which is rare for HVAC in Hardy, AR.
 
 I'm in Hardy, AR and work with shops locally and nationwide — 100% remote, no on-site needed from us.
 
 Quick question: when your team's on a job and a lead calls, what happens to that call after hours? Most owners I talk to lose 2–4 jobs a month just from slow text-back, not bad work.
 
-We run follow-up for {{trade}} companies (missed-call text in under 60 sec, estimate nudges, review requests). Pilot is $497 for 30 days — one extra job usually covers it.
+We run follow-up for HVAC companies (missed-call text in under 60 sec, estimate nudges, review requests). Pilot is $497 for 30 days — one extra job usually covers it.
 
 Worth a 15-min call this week? https://ofa-code.github.io/afterline/book.html
 

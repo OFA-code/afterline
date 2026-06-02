@@ -12,7 +12,7 @@ const regionLabel = cfg.region || cityLabel;
 
 const replacements = {
   YOUR_EMAIL: cfg.businessEmail,
-  YOUR_CC_EMAIL: cfg.personalEmail || cfg.businessEmail,
+  YOUR_CC_EMAIL: cfg.personalEmail || '',
   YOUR_CALENDLY: bookingUrl,
   YOUR_NAME: cfg.operatorName,
   YOUR_LEGAL_ENTITY: cfg.legalEntity || cfg.brand,
@@ -54,7 +54,7 @@ const bookPath = path.join(root, 'marketing/landing/book.html');
 if (fs.existsSync(bookPath)) {
   let book = fs.readFileSync(bookPath, 'utf8');
   book = book.replace(/window\.AFTERLINE_BOOK_EMAIL = '[^']*';/, `window.AFTERLINE_BOOK_EMAIL = '${cfg.businessEmail}';`);
-  book = book.replace(/window\.AFTERLINE_CC_EMAIL = '[^']*';/, `window.AFTERLINE_CC_EMAIL = '${cfg.personalEmail || cfg.businessEmail}';`);
+  book = book.replace(/window\.AFTERLINE_CC_EMAIL = '[^']*';/, `window.AFTERLINE_CC_EMAIL = '${cfg.personalEmail || ''}';`);
   fs.writeFileSync(bookPath, book);
 }
 

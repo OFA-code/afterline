@@ -56,7 +56,7 @@
   </section>
   <script>
     window.AFTERLINE_BOOK_EMAIL = 'deallomcconnell@optimalflowagency.io';
-    window.AFTERLINE_CC_EMAIL = 'deallomcconnell@gmail.com';
+    window.AFTERLINE_CC_EMAIL = '';
     window.AFTERLINE_API = 'http://localhost:3847';
 
     document.getElementById('form').addEventListener('submit', async (e) => {
@@ -95,20 +95,23 @@
       }
 
       try {
+        const payload = {
+          name: body.name,
+          company: body.company,
+          phone: body.phone,
+          email: body.email,
+          message: body.message || '',
+          _subject: 'Afterline audit — ' + body.company,
+          _template: 'table',
+          _captcha: 'false',
+        };
+        if (window.AFTERLINE_CC_EMAIL && window.AFTERLINE_CC_EMAIL.trim()) {
+          payload._cc = window.AFTERLINE_CC_EMAIL.trim();
+        }
         const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(window.AFTERLINE_BOOK_EMAIL), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            name: body.name,
-            company: body.company,
-            phone: body.phone,
-            email: body.email,
-            message: body.message || '',
-            _subject: 'Afterline audit — ' + body.company,
-            _template: 'table',
-            _captcha: 'false',
-            _cc: window.AFTERLINE_CC_EMAIL,
-          }),
+          body: JSON.stringify(payload),
         });
         if (res.ok) { showSuccess(); return; }
       } catch { /* continue */ }

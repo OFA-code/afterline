@@ -16,7 +16,13 @@
 - Book: https://ofa-code.github.io/afterline/book.html
 - Email: deallomcconnell@optimalflowagency.io
 
-## Config
+## Email & delivery (read before first client)
+
+| Doc | Purpose |
+|-----|---------|
+| [delivery/EMAIL-SETUP.md](delivery/EMAIL-SETUP.md) | Microsoft vs Gmail — your inbox |
+| [delivery/CLIENT-READY-CHECKLIST.md](delivery/CLIENT-READY-CHECKLIST.md) | Don't take payment until you can deliver |
+| [delivery/PLAYBOOK.md](delivery/PLAYBOOK.md) | What runs after they sign |
 
 Edit `config/business.json` (set **city** when you pick your market) → `node scripts/apply-config.mjs` → push.
 
