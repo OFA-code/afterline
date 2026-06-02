@@ -1,13 +1,11 @@
-# Launch status: COMPLETE
+# Status: ready to sell
 
-| Item | Status |
-|------|--------|
-| Email wired | deallomcconnell@optimalflowagency.io |
-| Booking (live) | FormSubmit → inbox + Gmail CC |
-| Landing live | https://ofa-code.github.io/afterline/ |
-| SMS API | Local admin ready; Twilio optional |
-| Outreach | Ready in `marketing\outreach\ready\` |
+**Master playbook:** [OPERATING-SYSTEM.md](OPERATING-SYSTEM.md)
 
-**One-time:** Click FormSubmit activation link in your agency inbox when the first test booking arrives.
+## Your only manual steps
 
-See [LAUNCH-COMPLETE.md](LAUNCH-COMPLETE.md) for links and revenue path.
+1. **City** — edit `config/business.json` → apply-config → push (when you pick your market)
+2. **FormSubmit** — click activation link in deallomcconnell@optimalflowagency.io (once)
+3. **Daily rhythm** — `powershell -File scripts/daily-start.ps1`
+
+Everything else is built.

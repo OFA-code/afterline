@@ -4,13 +4,18 @@
   "operatorName": "Deallo",
   "businessEmail": "deallomcconnell@optimalflowagency.io",
   "personalEmail": "deallomcconnell@gmail.com",
+  "parentWebsite": "https://www.optimalflowagency.io",
   "bookingPath": "/book.html",
-  "city": "your metro",
+  "city": "",
   "state": "",
+  "marketNote": "Set city in this file when you pick your first outreach batch (e.g. Chicago, Dallas, Atlanta).",
   "primaryTrade": "HVAC",
   "secondaryTrades": ["plumbing", "roofing", "electrical"],
   "pilotPrice": 497,
+  "starterPrice": 997,
   "growthPrice": 1497,
   "githubUser": "OFA-code",
-  "repoName": "afterline"
+  "repoName": "afterline",
+  "landingUrl": "https://ofa-code.github.io/afterline/",
+  "bookingUrl": "https://ofa-code.github.io/afterline/book.html"
 }

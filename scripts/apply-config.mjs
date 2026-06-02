@@ -5,8 +5,9 @@ import { fileURLToPath } from 'url';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(root, 'config', 'business.json'), 'utf8'));
 
-const landingUrl = `https://${cfg.githubUser}.github.io/${cfg.repoName}/`;
-const bookingUrl = `${landingUrl}${cfg.bookingPath.replace(/^\//, '')}`;
+const landingUrl = cfg.landingUrl || `https://${cfg.githubUser}.github.io/${cfg.repoName}/`;
+const bookingUrl = cfg.bookingUrl || `${landingUrl}${cfg.bookingPath.replace(/^\//, '')}`;
+const cityLabel = cfg.city || 'your area';
 
 const replacements = {
   YOUR_EMAIL: cfg.businessEmail,
@@ -17,7 +18,7 @@ const replacements = {
   '{{CALENDLY}}': bookingUrl,
   '{{LANDING_URL}}': landingUrl,
   '{{YourName}}': cfg.operatorName,
-  '{{City}}': cfg.city,
+  '{{City}}': cityLabel,
   '{{trade}}': cfg.primaryTrade,
   'Trave@users.noreply.github.com': cfg.businessEmail,
 };
@@ -56,7 +57,7 @@ if (fs.existsSync(bookPath)) {
 }
 
 const clients = JSON.parse(fs.readFileSync(path.join(root, 'apps/afterline/data/clients.json'), 'utf8'));
-clients.demo.name = `${cfg.city} ${cfg.primaryTrade} (demo)`;
+clients.demo.name = cfg.city ? `${cfg.city} ${cfg.primaryTrade} (demo)` : `Demo ${cfg.primaryTrade}`;
 clients.demo.trade = cfg.primaryTrade;
 clients.demo.bookingLink = bookingUrl;
 clients.demo.ownerEmail = cfg.businessEmail;

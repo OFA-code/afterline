@@ -1,13 +1,13 @@
 {
   "demo": {
-    "name": "your metro HVAC (demo)",
+    "name": "Demo HVAC",
     "trade": "HVAC",
     "timezone": "America/New_York",
     "businessHours": {
       "start": 7,
       "end": 19
     },
-    "bookingLink": "https://OFA-code.github.io/afterline/book.html",
+    "bookingLink": "https://ofa-code.github.io/afterline/book.html",
     "ownerEmail": "deallomcconnell@optimalflowagency.io",
     "active": true
   }
