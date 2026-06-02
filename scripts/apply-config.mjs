@@ -7,7 +7,8 @@ const cfg = JSON.parse(fs.readFileSync(path.join(root, 'config', 'business.json'
 
 const landingUrl = cfg.landingUrl || `https://${cfg.githubUser}.github.io/${cfg.repoName}/`;
 const bookingUrl = cfg.bookingUrl || `${landingUrl}${cfg.bookingPath.replace(/^\//, '')}`;
-const cityLabel = cfg.city || 'your area';
+const cityLabel = cfg.city ? `${cfg.city}, ${cfg.state || ''}`.trim().replace(/,\s*$/, '') : 'your area';
+const regionLabel = cfg.region || cityLabel;
 
 const replacements = {
   YOUR_EMAIL: cfg.businessEmail,
@@ -19,6 +20,7 @@ const replacements = {
   '{{LANDING_URL}}': landingUrl,
   '{{YourName}}': cfg.operatorName,
   '{{City}}': cityLabel,
+  '{{Region}}': regionLabel,
   '{{trade}}': cfg.primaryTrade,
   'Trave@users.noreply.github.com': cfg.businessEmail,
 };

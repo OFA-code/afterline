@@ -1,15 +1,14 @@
 # Outreach playbook — do it right
 
-## Step 1: Pick your city (once)
+## Step 1: Your market (Hardy AR + remote)
 
-Edit `config/business.json`:
+**Home base:** Hardy, Arkansas (`config/business.json` is set).
 
-```json
-"city": "Chicago",
-"state": "IL"
-```
+**Sell to:**
+- **Local** — NE Arkansas (Hardy, Flippin, Mountain Home, Jonesboro, Russellville)
+- **Remote** — Any US HVAC/plumbing shop (100% online delivery)
 
-Run: `node scripts/apply-config.mjs` then commit and push.
+No on-site visits needed. Setup = phone/SMS + Google Business Profile + templates they approve.
 
 ## Step 2: Build your list (Google Maps)
 
