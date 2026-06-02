@@ -21,6 +21,7 @@ const replacements = {
   '{{YourName}}': cfg.operatorName,
   '{{City}}': cityLabel,
   '{{Region}}': regionLabel,
+  YOUR_PUBLIC_API: cfg.apiPublicUrl || '',
   '{{trade}}': cfg.primaryTrade,
   'Trave@users.noreply.github.com': cfg.businessEmail,
 };
@@ -55,6 +56,7 @@ if (fs.existsSync(bookPath)) {
   let book = fs.readFileSync(bookPath, 'utf8');
   book = book.replace(/window\.AFTERLINE_BOOK_EMAIL = '[^']*';/, `window.AFTERLINE_BOOK_EMAIL = '${cfg.businessEmail}';`);
   book = book.replace(/window\.AFTERLINE_CC_EMAIL = '[^']*';/, `window.AFTERLINE_CC_EMAIL = '${cfg.personalEmail || ''}';`);
+  book = book.replace(/window\.AFTERLINE_PUBLIC_API = '[^']*';/, `window.AFTERLINE_PUBLIC_API = '${cfg.apiPublicUrl || ''}';`);
   fs.writeFileSync(bookPath, book);
 }
 

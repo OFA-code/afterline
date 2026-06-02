@@ -56,8 +56,9 @@
   </section>
   <script>
     window.AFTERLINE_BOOK_EMAIL = 'deallomcconnell@optimalflowagency.io';
-    window.AFTERLINE_CC_EMAIL = '';
+    window.AFTERLINE_CC_EMAIL = 'deallomcconnell@gmail.com';
     window.AFTERLINE_API = 'http://localhost:3847';
+    window.AFTERLINE_PUBLIC_API = '';
 
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -86,6 +87,18 @@
       if (isLocal && window.AFTERLINE_API) {
         try {
           const res = await fetch(window.AFTERLINE_API + '/api/book-audit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          if (res.ok) { showSuccess(); return; }
+        } catch { /* continue */ }
+      }
+
+      const publicApi = (window.AFTERLINE_PUBLIC_API || '').trim();
+      if (publicApi) {
+        try {
+          const res = await fetch(publicApi.replace(/\/$/, '') + '/api/book-audit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),

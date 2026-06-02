@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { addLead, getClients, getEvents, getLeads, getStats, logEvent } from './lib/store.js';
 import { handleMissedCall, sendTemplated } from './lib/sms.js';
+import { notifyNewLead } from './lib/notify.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -18,6 +19,7 @@ const allowedOrigins = [
   'http://127.0.0.1:3847',
   'http://localhost:3000',
   /^https:\/\/ofa-code\.github\.io$/,
+  /^https:\/\/.*\.onrender\.com$/,
   /^https:\/\/.*\.vercel\.app$/,
 ];
 app.use((req, res, next) => {
@@ -60,6 +62,7 @@ app.post('/api/book-audit', (req, res) => {
       return res.status(400).json({ error: 'name, company, phone required' });
     }
     const lead = addLead({ name, company, phone, email: email || '', message: message || '' });
+    notifyNewLead(lead).catch((e) => console.error('notify', e));
     res.json({ ok: true, lead });
   } catch (e) {
     res.status(500).json({ error: e.message });
