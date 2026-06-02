@@ -1,6 +1,6 @@
 {
   "demo": {
-    "name": "Demo HVAC",
+    "name": "Dallas HVAC (demo)",
     "trade": "HVAC",
     "timezone": "America/New_York",
     "businessHours": {
