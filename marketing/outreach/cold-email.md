@@ -33,7 +33,7 @@ If you're already texting back every missed call within a minute, ignore me — 
 
 If not, happy to show the 3-message sequence we use. No deck, just examples.
 
-https://OFA-code.github.io/afterline/book.html
+https://ofa-code.github.io/afterline/book.html
 
 ---
 
@@ -41,7 +41,7 @@ https://OFA-code.github.io/afterline/book.html
 
 **Subject:** closing the loop
 
-I'll assume timing's off. If follow-up ever becomes a priority, here's the offer page: https://OFA-code.github.io/afterline/
+I'll assume timing's off. If follow-up ever becomes a priority, here's the offer page: https://ofa-code.github.io/afterline/
 
 Good luck with the season.
 

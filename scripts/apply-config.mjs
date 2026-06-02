@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(root, 'config', 'business.json'), 'utf8'));
 
-const landingUrl = cfg.landingUrl || `https://${cfg.githubUser}.github.io/${cfg.repoName}/`;
-const bookingUrl = cfg.bookingUrl || `${landingUrl}${cfg.bookingPath.replace(/^\//, '')}`;
+const landingUrl = (cfg.landingUrl || `https://${cfg.githubUser}.github.io/${cfg.repoName}/`).replace(/OFA-code/gi, 'ofa-code');
+const bookingUrl = (cfg.bookingUrl || `${landingUrl}${cfg.bookingPath.replace(/^\//, '')}`).replace(/OFA-code/gi, 'ofa-code');
 const cityLabel = cfg.city ? `${cfg.city}, ${cfg.state || ''}`.trim().replace(/,\s*$/, '') : 'your area';
 const regionLabel = cfg.region || cityLabel;
 
@@ -46,6 +46,7 @@ function patchFile(rel) {
   for (const [from, to] of Object.entries(replacements)) {
     text = text.split(from).join(to);
   }
+  text = text.replace(/https:\/\/OFA-code\.github\.io/gi, 'https://ofa-code.github.io');
   fs.writeFileSync(file, text);
 }
 
