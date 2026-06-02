@@ -3,9 +3,28 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = path.join(__dirname, '..', 'data');
-const eventsFile = path.join(dataDir, 'events.json');
-const leadsFile = path.join(dataDir, 'leads.json');
+const bundledDataDir = path.join(__dirname, '..', 'data');
+const dataDir = process.env.VERCEL
+  ? path.join('/tmp', 'afterline-data')
+  : bundledDataDir;
+
+function ensureDataDir() {
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+    for (const name of ['clients.json', 'templates.json', 'events.json', 'leads.json']) {
+      const src = path.join(bundledDataDir, name);
+      const dest = path.join(dataDir, name);
+      if (fs.existsSync(src) && !fs.existsSync(dest)) {
+        fs.copyFileSync(src, dest);
+      }
+    }
+  }
+}
+
+function dataPath(name) {
+  ensureDataDir();
+  return path.join(dataDir, name);
+}
 
 function readJson(file, fallback) {
   try {
@@ -16,18 +35,24 @@ function readJson(file, fallback) {
 }
 
 function writeJson(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  } catch (e) {
+    if (!process.env.VERCEL) throw e;
+    console.error('writeJson skipped on Vercel', file, e.message);
+  }
 }
 
 export function getClients() {
-  return readJson(path.join(dataDir, 'clients.json'), {});
+  return readJson(dataPath('clients.json'), {});
 }
 
 export function getTemplates() {
-  return readJson(path.join(dataDir, 'templates.json'), {});
+  return readJson(dataPath('templates.json'), {});
 }
 
 export function logEvent(event) {
+  const eventsFile = dataPath('events.json');
   const events = readJson(eventsFile, []);
   events.push({
     ...event,
@@ -38,7 +63,7 @@ export function logEvent(event) {
 }
 
 export function getEvents(clientId, limit = 100) {
-  const events = readJson(eventsFile, []);
+  const events = readJson(dataPath('events.json'), []);
   return events
     .filter((e) => !clientId || e.clientId === clientId)
     .slice(-limit)
@@ -54,6 +79,7 @@ export function getStats(clientId) {
 }
 
 export function addLead(lead) {
+  const leadsFile = dataPath('leads.json');
   const leads = readJson(leadsFile, []);
   const row = {
     id: `lead_${Date.now()}`,
@@ -68,5 +94,5 @@ export function addLead(lead) {
 }
 
 export function getLeads(limit = 50) {
-  return readJson(leadsFile, []).slice(-limit).reverse();
+  return readJson(dataPath('leads.json'), []).slice(-limit).reverse();
 }

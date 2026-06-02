@@ -119,7 +119,11 @@ app.post('/api/twilio/voice-status', async (req, res) => {
   res.type('text/xml').send('<Response></Response>');
 });
 
-app.listen(PORT, () => {
-  console.log(`Afterline API http://localhost:${PORT}`);
-  console.log(`Admin dashboard http://localhost:${PORT}/admin.html`);
-});
+export default app;
+
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Afterline API http://localhost:${PORT}`);
+    console.log(`Admin dashboard http://localhost:${PORT}/admin.html`);
+  });
+}

@@ -9,7 +9,8 @@
 | Your name on emails | `config/business.json` → `operatorName` | Deallo |
 | City / market | `config/business.json` → `city`, `state`, `region` | Hardy, AR |
 | Pricing | `config/business.json` → `pilotPrice`, etc. | 497 / 997 / 1497 |
-| Public API URL (after Render) | `config/business.json` → `apiPublicUrl` | empty until deployed |
+| Public API URL | `config/business.json` → `apiPublicUrl` | https://afterline-api.vercel.app |
+| Vercel env (Twilio, secrets) | Vercel dashboard or `vercel env add` | apps/afterline project |
 | Twilio SMS keys | `apps/afterline/.env` | empty until pilot client |
 | Admin password | `apps/afterline/.env` → `ADMIN_SECRET` | set (do not share) |
 | Outreach targets | `tools/LEAD-TRACKER.csv` | 10 leads loaded |
@@ -22,4 +23,6 @@
 2. FormSubmit emails `businessEmail` (+ CC to Gmail)
 3. You reply from Outlook within 2 hours
 
-**When you get a pilot client:** run `scripts/setup-twilio.ps1`, deploy API to Render, set `apiPublicUrl`, apply config.
+**When you get a pilot client:** run `scripts/setup-twilio.ps1`, add Twilio keys in Vercel env, set webhooks to `https://afterline-api.vercel.app/api/twilio/...`
+
+**Note:** Vercel stores leads in memory per request — booking emails still fire via FormSubmit. Use local admin (`localhost:3847`) for full lead history.

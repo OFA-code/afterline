@@ -92,10 +92,10 @@ Write-Host "`n--- Revenue pipeline ---" -ForegroundColor Gray
 $tracker = Import-Csv (Join-Path $Root "tools\LEAD-TRACKER.csv")
 $total = $tracker.Count
 $new = ($tracker | Where-Object { $_.status -eq 'new' }).Count
-$withEmail = ($tracker | Where-Object { $_.email -and $_.email.Trim() }).Count
-Ok ("Lead tracker: {0} leads, {1} unsent, {2} with email" -f $total, $new, $withEmail)
+$emailCount = @($tracker | Where-Object { $_.email -and ($_.email -as [string]).Trim() -ne '' }).Count
+Ok ("Lead tracker: {0} leads, {1} unsent, {2} with email" -f $total, $new, $emailCount)
 if ($new -eq $total) { Warn "Zero outreach sent yet - revenue blocked until you send from tools\outbox\" }
-if ($withEmail -lt 2) { Warn "Most leads need phone/website lookup - use .url files or call first" }
+if ($emailCount -lt 2) { Warn "Most leads need phone/website lookup - use .url files or call first" }
 
 # --- Book API test ---
 Write-Host "`n--- Lead capture test ---" -ForegroundColor Gray
