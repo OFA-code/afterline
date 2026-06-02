@@ -1,7 +1,9 @@
-# Daily start — opens your operating stack
+# Daily start - opens your operating stack
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 
-Write-Host "`nAfterline — daily start`n" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Afterline - daily start" -ForegroundColor Cyan
+Write-Host ""
 
 $apiRunning = $false
 try {
@@ -11,7 +13,8 @@ try {
 
 if (-not $apiRunning) {
   Write-Host "Starting API..." -ForegroundColor Gray
-  Start-Process powershell -ArgumentList "-NoExit","-Command","cd '$Root\apps\afterline'; node server.js" -WindowStyle Minimized
+  $cmd = "cd '$Root\apps\afterline'; node server.js"
+  Start-Process powershell -ArgumentList "-NoExit", "-Command", $cmd -WindowStyle Minimized
   Start-Sleep -Seconds 2
 }
 
@@ -21,6 +24,6 @@ Start-Process "$Root\marketing\outreach\PLAYBOOK.md"
 Start-Process "http://localhost:3847/admin.html"
 Start-Process "https://ofa-code.github.io/afterline/book.html"
 
-Write-Host "Open: LEAD-TRACKER, daily checklist, outreach playbook, admin, booking page"
+Write-Host "Opened: LEAD-TRACKER, daily checklist, outreach playbook, admin, booking page"
 Write-Host "Read: OPERATING-SYSTEM.md"
 Write-Host ""
