@@ -60,13 +60,18 @@
       e.preventDefault();
       const fd = new FormData(e.target);
       const body = Object.fromEntries(fd.entries());
-      const mailto = () => {
-        window.location.href = 'mailto:' + EMAIL + '?' + new URLSearchParams({
-          subject: 'Audit request — ' + (body.company || 'home service'),
-          body: Object.entries(body).map(([k, v]) => k + ': ' + v).join('\n'),
-        }).toString();
-      };
-      if (API && !EMAIL.includes('CHANGE_ME')) {
+    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const mailto = () => {
+      if (EMAIL.includes('noreply.github.com') || EMAIL.includes('CHANGE_ME')) {
+        alert('Booking saved locally is unavailable on the live site. Email Trave directly after updating config/business.json with your real Gmail, or run START.ps1 and use http://localhost:3847/admin.html for leads.');
+        return;
+      }
+      window.location.href = 'mailto:' + EMAIL + '?' + new URLSearchParams({
+        subject: 'Audit request — ' + (body.company || 'home service'),
+        body: Object.entries(body).map(([k, v]) => k + ': ' + v).join('\n'),
+      }).toString();
+    };
+    if (isLocal && API) {
         try {
           const res = await fetch(API + '/api/book-audit', {
             method: 'POST',
