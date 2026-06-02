@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afterline Admin</title>
+  <style>
+    :root { --bg:#0c1118; --surface:#151c27; --border:#243044; --text:#e8edf4; --muted:#94a3b8; --accent:#3b82f6; --green:#22c55e; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); padding:24px; line-height:1.5; }
+    h1 { font-size:1.5rem; margin-bottom:8px; }
+    .muted { color:var(--muted); font-size:0.9rem; margin-bottom:24px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:16px; margin-bottom:32px; }
+    .stat { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; }
+    .stat strong { display:block; font-size:2rem; color:var(--green); }
+    label { display:block; font-size:0.85rem; color:var(--muted); margin-bottom:6px; }
+    input, button { font:inherit; padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--text); }
+    button { background:var(--accent); border:none; color:#fff; cursor:pointer; font-weight:600; }
+    button:hover { opacity:0.9; }
+    .row { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom:24px; }
+    .row > div { flex:1; min-width:160px; }
+    table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+    th, td { text-align:left; padding:10px; border-bottom:1px solid var(--border); }
+    th { color:var(--muted); font-weight:500; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:4px; background:#1e293b; font-size:0.75rem; }
+  </style>
+</head>
+<body>
+  <h1>Afterline Admin</h1>
+  <p class="muted">Local dashboard — set ADMIN_SECRET in .env and enter it below if enabled.</p>
+
+  <div class="row">
+    <div>
+      <label>Admin secret (if set)</label>
+      <input type="password" id="secret" placeholder="Optional" />
+    </div>
+    <div>
+      <label>Client ID</label>
+      <input type="text" id="clientId" value="demo" />
+    </div>
+    <button type="button" id="refresh">Refresh</button>
+  </div>
+
+  <div class="grid" id="stats"></div>
+
+  <h2 style="margin-bottom:12px;font-size:1.1rem">Test missed call</h2>
+  <div class="row">
+    <div>
+      <label>Phone (E.164, e.g. +15551234567)</label>
+      <input type="tel" id="testPhone" placeholder="+1..." />
+    </div>
+    <button type="button" id="testMissed">Send missed-call flow</button>
+  </div>
+
+  <h2 style="margin:32px 0 12px;font-size:1.1rem">Audit leads (book here)</h2>
+  <table style="margin-bottom:32px">
+    <thead><tr><th>Time</th><th>Name</th><th>Company</th><th>Phone</th></tr></thead>
+    <tbody id="leads"></tbody>
+  </table>
+
+  <h2 style="margin:32px 0 12px;font-size:1.1rem">Recent events</h2>
+  <table>
+    <thead><tr><th>Time</th><th>Type</th><th>Detail</th></tr></thead>
+    <tbody id="events"></tbody>
+  </table>
+
+  <script>
+    const secretEl = document.getElementById('secret');
+    const clientEl = document.getElementById('clientId');
+
+    function headers() {
+      const h = { 'Content-Type': 'application/json' };
+      if (secretEl.value) h['x-admin-secret'] = secretEl.value;
+      return h;
+    }
+
+    async function load() {
+      const cid = clientEl.value || 'demo';
+      const q = secretEl.value ? `?key=${encodeURIComponent(secretEl.value)}&clientId=${cid}` : `?clientId=${cid}`;
+      const [statsRes, eventsRes, leadsRes] = await Promise.all([
+        fetch('/api/stats' + q, { headers: headers() }),
+        fetch('/api/events' + q + '&limit=30', { headers: headers() }),
+        fetch('/api/leads' + q + '&limit=20', { headers: headers() }),
+      ]);
+      if (!statsRes.ok) { alert('Stats failed — check ADMIN_SECRET'); return; }
+      const stats = await statsRes.json();
+      document.getElementById('stats').innerHTML = `
+        <div class="stat"><strong>${stats.leads ?? 0}</strong>Leads</div>
+        <div class="stat"><strong>${stats.missed}</strong>Missed calls</div>
+        <div class="stat"><strong>${stats.sent}</strong>SMS sent</div>
+        <div class="stat"><strong>${stats.replies}</strong>Replies</div>
+      `;
+      const leadsData = await leadsRes.json();
+      document.getElementById('leads').innerHTML = (leadsData.leads || []).map(l => `
+        <tr>
+          <td>${new Date(l.at).toLocaleString()}</td>
+          <td>${l.name}</td>
+          <td>${l.company}</td>
+          <td>${l.phone}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="4">No leads yet — share your booking link</td></tr>';
+      const { events } = await eventsRes.json();
+      document.getElementById('events').innerHTML = (events || []).map(e => `
+        <tr>
+          <td>${new Date(e.at).toLocaleString()}</td>
+          <td><span class="badge">${e.type}</span></td>
+          <td>${e.phone || e.to || e.body || e.reason || '—'}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="3">No events yet</td></tr>';
+    }
+
+    document.getElementById('refresh').onclick = load;
+    document.getElementById('testMissed').onclick = async () => {
+      const phone = document.getElementById('testPhone').value;
+      if (!phone) return alert('Enter phone');
+      const res = await fetch('/api/missed-call', {
+        method: 'POST',
+        headers: headers(),
+        body: JSON.stringify({ phone, clientId: clientEl.value }),
+      });
+      const data = await res.json();
+      alert(res.ok ? (data.result?.simulated ? 'Simulated (add Twilio)' : 'Sent') : data.error);
+      load();
+    };
+    load();
+  </script>
+</body>
+</html>

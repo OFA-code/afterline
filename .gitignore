@@ -1,0 +1,5 @@
+apps/afterline/node_modules/
+apps/afterline/.env
+apps/afterline/data/events.json
+apps/afterline/data/leads.json
+.DS_Store

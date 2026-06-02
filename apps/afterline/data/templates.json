@@ -1,0 +1,6 @@
+{
+  "missed_call_1": "Hi {{name}}, this is {{company}} — we just missed your call. Reply with your address or tap to book: {{booking_link}}",
+  "missed_call_2": "Still here if you need {{trade}} help today. Happy to squeeze you in — just reply YES.",
+  "review_1": "Thanks for choosing {{company}}! If we did good work, a quick Google review helps us a ton: {{review_link}}",
+  "estimate_1": "Hi {{name}}, checking in on your {{trade}} estimate from {{company}}. Any questions? Reply here — happy to help."
+}

@@ -1,0 +1,14 @@
+---
+description: This workspace uses gstack for all product and engineering work
+alwaysApply: true
+---
+
+# Workspace — Afterline
+
+Active business: **Afterline** (AI follow-up for local home service). Read `offer/OFFER.md` before building.
+
+Workflow: office-hours → autoplan → build → review → qa → ship.
+
+**Revenue before code:** Do not build `apps/afterline` until 2 signed pilots exist.
+
+Save strategy docs under `ideas/`. Client work under `clients/`.

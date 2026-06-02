@@ -1,0 +1,18 @@
+{
+    "brand":  "Afterline",
+    "operatorName":  "Trave",
+    "businessEmail":  "Trave@users.noreply.github.com",
+    "bookingPath":  "/book.html",
+    "city":  "your metro",
+    "state":  "",
+    "primaryTrade":  "HVAC",
+    "secondaryTrades":  [
+                            "plumbing",
+                            "roofing",
+                            "electrical"
+                        ],
+    "pilotPrice":  497,
+    "growthPrice":  1497,
+    "githubUser":  "OFA-code",
+    "repoName":  "afterline"
+}

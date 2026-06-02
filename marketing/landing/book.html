@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book audit — Afterline</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .book-form { max-width: 480px; margin: 0 auto; text-align: left; }
+    .book-form label { display: block; font-size: 0.85rem; color: var(--muted); margin: 16px 0 6px; }
+    .book-form input, .book-form textarea {
+      width: 100%; padding: 12px 14px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit;
+    }
+    .book-form textarea { min-height: 80px; resize: vertical; }
+    .success { display: none; background: rgba(34,197,94,0.15); border: 1px solid var(--green); padding: 20px; border-radius: 12px; margin-top: 24px; }
+    .success.show { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none">After<span>line</span></a></div>
+    </div>
+  </header>
+  <section class="hero" style="padding-top:48px">
+    <div class="wrap">
+      <h1 style="font-size:1.75rem">15-min Revenue Leak Audit</h1>
+      <p class="sub" style="margin-bottom:32px">No pitch deck. We look at missed calls, estimates, and reviews — you decide if the pilot makes sense.</p>
+      <form class="book-form" id="form">
+        <label>Your name</label>
+        <input name="name" required placeholder="Mike" />
+        <label>Company</label>
+        <input name="company" required placeholder="ABC Heating & Air" />
+        <label>Phone</label>
+        <input name="phone" type="tel" required placeholder="+1 555 123 4567" />
+        <label>Email</label>
+        <input name="email" type="email" required placeholder="you@company.com" />
+        <label>What's your biggest leak? (optional)</label>
+        <textarea name="message" placeholder="Missed calls after hours, estimates going cold..."></textarea>
+        <p style="margin-top:24px">
+          <button type="submit" class="btn" style="border:none;cursor:pointer;width:100%">Request audit</button>
+        </p>
+      </form>
+      <div class="success" id="success">
+        <strong>Request received.</strong>
+        <p style="color:var(--muted);margin-top:8px">We'll reach out within one business day. If urgent, email <a href="mailto:Trave@users.noreply.github.com">Trave@users.noreply.github.com</a>.</p>
+      </div>
+      <p style="margin-top:32px;text-align:center;font-size:0.85rem;color:var(--muted)">
+        <a href="index.html">← Back to home</a>
+      </p>
+    </div>
+  </section>
+  <script>
+    window.AFTERLINE_BOOK_EMAIL = 'Trave@users.noreply.github.com';
+    window.AFTERLINE_API = 'http://localhost:3847';
+    const API = window.AFTERLINE_API;
+    const EMAIL = window.AFTERLINE_BOOK_EMAIL;
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = Object.fromEntries(fd.entries());
+      const mailto = () => {
+        window.location.href = 'mailto:' + EMAIL + '?' + new URLSearchParams({
+          subject: 'Audit request — ' + (body.company || 'home service'),
+          body: Object.entries(body).map(([k, v]) => k + ': ' + v).join('\n'),
+        }).toString();
+      };
+      if (API && !EMAIL.includes('CHANGE_ME')) {
+        try {
+          const res = await fetch(API + '/api/book-audit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          if (res.ok) {
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('success').classList.add('show');
+            return;
+          }
+        } catch { /* fall through */ }
+      }
+      mailto();
+    });
+  </script>
+</body>
+</html>
