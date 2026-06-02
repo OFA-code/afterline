@@ -22,4 +22,5 @@ Start-Process "http://localhost:3847/admin.html"
 Start-Process "https://ofa-code.github.io/afterline/book.html"
 
 Write-Host "Open: LEAD-TRACKER, daily checklist, outreach playbook, admin, booking page"
-Write-Host "Read: OPERATING-SYSTEM.md`n"
+Write-Host "Read: OPERATING-SYSTEM.md"
+Write-Host ""
